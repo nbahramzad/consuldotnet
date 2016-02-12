@@ -945,7 +945,11 @@ namespace Consul
             }
             else
             {
-                content = new PushStreamContent((stream, httpContent, transportContext) => { Serialize(_body, stream); });
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    Serialize(_body, stream);
+                    content = new ByteArrayContent(stream.ToArray());
+                }
             }
 
             var response = await Client.HttpClient.PutAsync(BuildConsulUri(Endpoint, Params), content, ct).ConfigureAwait(false);
@@ -1028,7 +1032,11 @@ namespace Consul
             }
             else
             {
-                content = new PushStreamContent((stream, httpContent, transportContext) => { Serialize(_body, stream); });
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    Serialize(_body, stream);
+                    content = new ByteArrayContent(stream.ToArray());
+                }
             }
 
             var response = await Client.HttpClient.PutAsync(BuildConsulUri(Endpoint, Params), content, ct).ConfigureAwait(false);
@@ -1117,7 +1125,11 @@ namespace Consul
             }
             else
             {
-                content = new PushStreamContent((stream, httpContent, transportContext) => { Serialize(_body, stream); });
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    Serialize(_body, stream);
+                    content = new ByteArrayContent(stream.ToArray());
+                }
             }
 
             var response = await Client.HttpClient.PostAsync(BuildConsulUri(Endpoint, Params), content, ct).ConfigureAwait(false);
